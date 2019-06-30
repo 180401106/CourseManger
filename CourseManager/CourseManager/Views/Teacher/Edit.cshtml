@@ -1,4 +1,4 @@
-﻿@model CourseManager.Models.Teacher
+﻿@model CourseManager.Models.Teachers
 
 @{
     ViewBag.Title = "Edit";
@@ -10,15 +10,15 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Teacher</legend>
+        <legend>Teachers</legend>
 
         @Html.HiddenFor(model => model.Id)
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-lable col-md-2"})
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
+            @Html.TextBoxFor(model => model.Name, new {@class = "form-control"})
             @Html.ValidationMessageFor(model => model.Name)
         </div>
 

@@ -6,15 +6,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseManager.Models;
+using CourseManager.Filters;
 
 namespace CourseManager.Controllers
 {
-    public class studentController : Controller
+    [RequireAuthentication]
+    [ActionResultExceptionFilter]
+    public class StudentController : Controller
     {
-        private courseManagerEntities db = new courseManagerEntities();
+        private CourseManagerEntities db = new CourseManagerEntities();
 
         //
-        // GET: /student/
+        // GET: /Student/
 
         public ActionResult Index()
         {
@@ -22,7 +25,7 @@ namespace CourseManager.Controllers
         }
 
         //
-        // GET: /student/Details/5
+        // GET: /Student/Details/5
 
         public ActionResult Details(int id = 0)
         {
@@ -35,15 +38,16 @@ namespace CourseManager.Controllers
         }
 
         //
-        // GET: /student/Create
+        // GET: /Student/Create
 
         public ActionResult Create()
         {
+            ViewBag.class_ = db.Classes.ToList();
             return View();
         }
 
         //
-        // POST: /student/Create
+        // POST: /Student/Create
 
         [HttpPost]
         public ActionResult Create(Students students)
@@ -59,10 +63,11 @@ namespace CourseManager.Controllers
         }
 
         //
-        // GET: /student/Edit/5
+        // GET: /Student/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
+            ViewBag.class_ = db.Classes.ToList();
             Students students = db.Students.Find(id);
             if (students == null)
             {
@@ -72,7 +77,7 @@ namespace CourseManager.Controllers
         }
 
         //
-        // POST: /student/Edit/5
+        // POST: /Student/Edit/5
 
         [HttpPost]
         public ActionResult Edit(Students students)
@@ -87,7 +92,7 @@ namespace CourseManager.Controllers
         }
 
         //
-        // GET: /student/Delete/5
+        // GET: /Student/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
@@ -100,7 +105,7 @@ namespace CourseManager.Controllers
         }
 
         //
-        // POST: /student/Delete/5
+        // POST: /Student/Delete/5
 
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)

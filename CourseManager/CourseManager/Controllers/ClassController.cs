@@ -6,13 +6,17 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseManager.Models;
+using CourseManager.BLLs.Classes;
+using CourseManager.Filters;
 
 namespace CourseManager.Controllers
 {
+    [RequireAuthentication]
+    [ActionResultExceptionFilter]
     public class ClassController : Controller
     {
-        private courseManagerEntities db = new courseManagerEntities();
-
+        private CourseManagerEntities db = new CourseManagerEntities();
+        private IClassRepository _repository = new ClassRepository();
         //
         // GET: /Class/
 
@@ -39,14 +43,18 @@ namespace CourseManager.Controllers
 
         public ActionResult Create()
         {
-            var teachers = db.Teacher.ToList();
-            ViewBag.Teacher = teachers;
-
+            var teachers = db.Teachers.ToList();
+            ViewBag.teachers = teachers;
             return View();
         }
 
         //
         // POST: /Class/Create
+
+        public ActionResult ShowCourseManagement(int id)
+        {
+            return View(_repository.GetClassCourse(id));
+        }
 
         [HttpPost]
         public ActionResult Create(Classes classes)
@@ -66,13 +74,13 @@ namespace CourseManager.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            var teachers = db.Teacher.ToList();
-            ViewBag.Teacher = teachers;
+            var teachers = db.Teachers.ToList();
+            ViewBag.teachers = teachers;
+
             Classes classes = db.Classes.Find(id);
             if (classes == null)
             {
                 return HttpNotFound();
-                
             }
             return View(classes);
         }
